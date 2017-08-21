@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+    <title>Internet Home</title>
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="__PUBLIC__/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <link href="__PUBLIC__/css/animate.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/style.min.css?v=4.0.0" rel="stylesheet"><!-- <base target="_blank"> -->
+	<link href="__PUBLIC__/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+	<script src="__PUBLIC__/js/plugins/sweetalert/sweetalert.min.js"></script>
+	<script src="__PUBLIC__/js/jquery.min.js?v=2.1.4"></script>
+	<script>
+		$(function(){
+			//关注
+			$(document).on('click',"[name='attention']",function(){
+				var nickname = $(this).attr('nickname');
+				$.ajax({
+				    type: "POST",
+				    url: "__URL__/Attention",
+				    data: "nickname="+nickname,
+					async:false,
+					success:function(data){
+						m = data;
+					}
+				});
+				if(m == '1'){
+					swal("关注成功","--------------------------", "success"); 
+					$(this).attr('name','cancelAttention');
+					$(this).html("取消关注");
+				}else{
+					return false;
+				}
+					
+			});
+			
+			//取消关注
+			$(document).on('click',"[name='cancelAttention']",function(){
+				var nickname = $(this).attr('nickname');
+				$.ajax({
+				    type: "POST",
+				    url: "__URL__/cancelAttention",
+				    data: "nickname="+nickname,
+					async:false,
+					success:function(data){
+						m = data;
+					}
+				});
+				if(m == '1'){
+					swal("取消成功", "--------------------------", "success"); 
+					$(this).attr('name','attention');
+					$(this).html("&nbsp;&nbsp;&nbsp;关&nbsp;注&nbsp;&nbsp;&nbsp;");
+				}else{
+					return false;
+				}
+					
+			});
+		});
+	</script>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+			<if condition="$info">
+				<foreach name='info' item='k'>
+					<div class="col-sm-4">
+						<div class="contact-box">
+								
+								<div class="col-sm-4">
+									<div class="text-center">
+										
+										 <span><img alt="image" class="img-circle" src="__PUBLIC__/UserHead/{$k['picture']}" width='65px' height='65px'/></span>
+										<div class="m-t-xs font-bold">
+											<switch name="k.status">
+												<case value="0">禁用用户</case>
+												<case value="1">普通用户</case>
+												<case value="2">会员用户</case>
+												<case value="3">认证用户</case>
+												<case value="4">官方用户</case>
+												<default />黑客~~~
+											</switch>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-8">
+									<h3><strong>{$k['nickname']}</strong></h3>
+									<h4>创建IH时间<i class='glyphicon glyphicon-arrow-down'></i></h4>
+									<p><i class="glyphicon glyphicon-time"></i>{$k['time']|date="Y-m-d",###}</p>
+									<p><i class="glyphicon glyphicon-time"></i>{$k['time']|date="H:i:s",###}</p>
+								</div>
+								<div>
+								<if condition="$k['rboolean']">
+									&nbsp;&nbsp;<button name="cancelAttention" nickname="{$k['nickname']}" class='btn btn-danger btn-sm' style='color:white;'>取消关注</button>&nbsp;&nbsp;
+								<else />
+									&nbsp;&nbsp;<button name="attention" nickname="{$k['nickname']}" class='btn btn-danger btn-sm' style='color:white;'>&nbsp;&nbsp;&nbsp;关&nbsp;注&nbsp;&nbsp;&nbsp;</button>&nbsp;&nbsp;
+								</if>
+								<a href="__URL__/viewDetails/nickname/{$k['nickname']}" class='btn btn-primary btn-sm' style='color:white'>查看信息</a>&nbsp;&nbsp;
+								<a href="__URL__/viewDynamic/nickname/{$k['nickname']}" class='btn btn-warning btn-sm' style='color:white'>查看动态</a>
+								<div class="clearfix"></div>
+								</div>
+						</div>
+					</div>
+				</foreach>
+			<else />
+				<div class="middle-box text-center animated fadeInDown">
+					<h1 style='font-size:40px;'>您当前并未关注他人~~~</h1>
+					<br/>
+					<div class="error-desc">
+						<a href="{:U('Home/Dynamic/hot')}">去热门动态动寻找你喜欢的人吧~~~</a>
+						<br/>
+						<br/>
+						<a href="javascript:history.go(-1);" class="btn btn-primary m-t">返回</a>
+						<a href="javascript:history.go(-1);" class="btn btn-primary m-t">Go Back</a>
+						<a href="javascript:history.go(-1);" class="btn btn-primary m-t">戻る</a>
+						<a href="javascript:history.go(-1);" class="btn btn-primary m-t">복귀</a>
+					</div>
+				</div>			
+			</if>
+        </div>
+    </div>
+    <script src="__PUBLIC__/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/js/bootstrap.min.js?v=3.3.5"></script>
+    <script src="__PUBLIC__/js/content.min.js?v=1.0.0"></script>
+    <script>
+        $(document).ready(function(){$(".contact-box").each(function(){animationHover(this,"pulse")})});
+    </script>
+    <!-- <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script> -->
+</body>
+
+</html>

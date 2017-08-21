@@ -1,0 +1,1 @@
+<?phpnamespace Home\Controller;use Think\Controller;class LeftVideoController extends Controller{	public function video()	{		$m = M('dynamic');		$info = $m->where("type = 2")->select();		$this->assign('info',$info);		$this->display('dynamic');	}}?>

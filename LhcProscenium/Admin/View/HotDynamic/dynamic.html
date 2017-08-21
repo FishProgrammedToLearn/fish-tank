@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+    <title>IH后台管理页面</title>
+
+    <link rel="shortcut icon" href="favicon.ico"> 
+	<link href="__PUBLIC__/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="__PUBLIC__/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="__PUBLIC__/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="__PUBLIC__/css/animate.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/style.min.css?v=4.0.0" rel="stylesheet"><!-- <base target="_blank"> -->
+	<script src="__PUBLIC__/js/jquery-1.8.3.js"></script>
+	<script>
+		$(function(){
+			var m = false;
+			$(".comment").click(function(){
+				var n = $(this).attr('num');
+				//alert(n);
+				if(!m){
+					//$(this).parent().parent().parent().parent().next().find('tbody').css('display','block');
+					//hasClass("social-body").next().next().css('display','block')
+					$("table").eq(n).parent().slideDown(200);
+					//$(".cDiv").find('tbody').css('display','block');
+					m = true;
+				}else{
+					$("table").eq(n).parent().slideUp(200);
+					//$(this).parent().parent().parent().parent().next().find('tbody').css('display','block');
+					//$(".cDiv").find('tbody').css('display','none');
+					m = false;
+				}
+			});
+			
+		});
+	</script>
+</head>
+
+<body class="gray-bg">
+    
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="row">
+				   
+				   
+							<if condition="$info">
+							
+							<foreach name="info" item="k" > 
+        
+							<div class="col-sm-12" >	
+							<div class="ibox float-e-margins">	
+								<div class="ibox-title">
+									<span class='label label-primary' style='font-size:13px;'>{$k['nickname']}</span>
+									<span class='label label-warning-light' style='font-size:13px;'>({$k['time']|date="Y-m-d H:i:s",###})</span>
+									<if condition="$k['hot'] eq 1">
+										&nbsp;&nbsp;<i class='glyphicon glyphicon-fire' style='font-size:20px;color:red;'></i>
+									</if>
+									<div class="ibox-tools">
+										<a style='color:blue;' class="collapse-link">
+											<<<
+										</a>
+										<!-- <a style='color:blue;' href='__URL__/index/where/NormalUser'>
+											<i class="glyphicon glyphicon-repeat"></i> 返回
+										</a> -->
+										<if condition="$k['hot'] eq 1">
+											<a style='color:red;' href="__URL__/remove/did/{$k['id']}" class="collapse-link">
+												<b>移出热门</b>
+											</a>
+										<else />
+											<a style='color:red;' href="__URL__/insert/did/{$k['id']}" class="collapse-link">
+												<b>添加热门</b>
+											</a>
+										</if>
+									</div>
+								</div>
+								<div class="ibox-content">
+					
+									<table class="table-striped table-bordered table-hover dataTables-example">
+									<tbody> 
+									<div class="social-feed-box">
+
+										<div class="pull-right social-action dropdown">
+											<button data-toggle="dropdown" class="dropdown-toggle btn-white">
+												<i class="fa fa-angle-down"></i>
+											</button>
+											<ul class="dropdown-menu m-t-xs">
+												<li><a href="__URL__/del_dynamic/id/{$k['id']}">删除当前区域动态</a></li>
+											</ul>
+										</div>
+										<div class="social-avatar">
+											<a href="" class="pull-left">
+												<img alt="image" src="__PUBLIC__/UserHead/{$k['npicture']}">
+											</a>
+											<div class="media-body">
+												<a href=''>{$k['nickname']}</a>
+												<small class="text-muted">{$k['time']|date="Y-m-d H:i:s",###}</small>
+											</div>
+										</div>
+										<br/>
+										<div class="social-body">
+											<p>
+												{$k['text']}
+											</p>
+											<div>
+												<img src='' />
+											</div>
+											<br/>
+											<div class="">
+												<div style='width:100%'>
+													<center>
+													<div style='width:25%;float:left;border-right:1px solid #CCC;'><i style='font-size:15px;' class='fa fa-thumbs-up'></i> 点赞 ({$k['endorse']})</div>
+													<div style='width:25%;float:left;border-right:1px solid #CCC;'><i style='font-size:14px;' class='fa fa-heart'></i> 收藏 ({$k['collect']})</div>
+													<div style='width:25%;float:left;border-right:1px solid #CCC;'><i style='font-size:15px;' class='fa fa-share'></i> 转发 ({$k['rebroadcast']})</div>
+													<a class='comment' num='{$num}'><div style='width:25%;float:left;'><i style='font-size:16px;' class='fa fa-comments'></i> 评论 ({$k['comment']})</div></a>
+													</center>
+												</div>
+											</div>
+											<br/>
+										</div>
+										</div> 
+										</tbody>
+								</table>
+											<div style='display:none;'>
+											<table border='0px' height='100%' cellspacing='0px' >
+												<foreach name="comment[$cnum]" item="ck">
+													
+													<tbody>
+													<tr>
+														<td rowspan='2' width='40px'>
+															<img width='40px' src="__PUBLIC__/UserHead/{$ck['picture']}" /></td>
+														<td width='100%'><a href=''>&nbsp;&nbsp;{$ck['nickname']}</a></td>
+													</tr>
+													<tr>
+														<td>
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+															{$ck['text']}
+														</td>
+													</tr>
+													<tr>
+														<td>&nbsp;</td>
+														<td align='right'><i style='font-size:16px;' class='fa fa-thumbs-up'></i> 
+														赞 ({$ck['endorse']})&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$ck['time']|date="Y-m-d H:i:s",###}
+														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="__URL__/del_dynamicComment/id/{$ck['id']}">删除</a>&nbsp;&nbsp;&nbsp;</td>
+													</tr>
+													<tr><td width='100%' colspan='2'>
+														<div style='width:100%;height:10px;border:0px solid black;'>
+															<div style='width:100%;height:1px;border-top:1px solid #CCC;margin-top:10px;'></div>
+														</div>
+													</td></tr>
+													</tbody>
+												</foreach>
+											</table>
+											</div>
+									
+									 
+								</div>
+								</div> 
+								 </div>       
+								
+								<div style='display:none;'>{$num++}{$num++}{$cnum++}</div>
+								</foreach>
+								
+								<else />
+								<div class="middle-box text-center animated fadeInDown">
+									<h1 style='font-size:40px;'>当前分类并无动态</h1>
+									<br/>
+									<div class="error-desc">
+										请返回上一页~
+										<br/>
+										<br/>
+										<a href="javascript:history.go(-1);" class="btn btn-primary m-t">返回</a>
+										<a href="javascript:history.go(-1);" class="btn btn-primary m-t">Go Back</a>
+										<a href="javascript:history.go(-1);" class="btn btn-primary m-t">戻る</a>
+										<a href="javascript:history.go(-1);" class="btn btn-primary m-t">복귀</a>
+									</div>
+								</div>
+								
+								</if>
+                           
+						
+					                   
+				</div> 
+             </div>      
+              
+           
+        
+    <script src="__PUBLIC__/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/js/bootstrap.min.js?v=3.3.5"></script>
+    <script src="__PUBLIC__/js/plugins/jeditable/jquery.jeditable.js"></script>
+    <script src="__PUBLIC__/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="__PUBLIC__/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="__PUBLIC__/js/content.min.js?v=1.0.0"></script>
+    <script>
+        $(document).ready(function(){$(".dataTables-example").dataTable();var oTable=$("#editable").dataTable();oTable.$("td").editable("../example_ajax.php",{"callback":function(sValue,y){var aPos=oTable.fnGetPosition(this);oTable.fnUpdate(sValue,aPos[0],aPos[1])},"submitdata":function(value,settings){return{"row_id":this.parentNode.getAttribute("id"),"column":oTable.fnGetPosition(this)[2]}},"width":"90%","height":"100%"})});function fnClickAddRow(){$("#editable").dataTable().fnAddData(["Custom row","New row","New row","New row","New row"])};
+    </script>
+    <!-- <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script> -->
+
+</body>
+
+</html>

@@ -1,0 +1,1 @@
+<?phpnamespace Home\Controller;use Think\Controller;class LeftPhotoController extends Controller{	public function Photo()	{		$this->display('Photo');	}}?>

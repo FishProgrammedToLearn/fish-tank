@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+    <title>IH后台管理页面</title>
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="__PUBLIC__/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="__PUBLIC__/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="__PUBLIC__/css/animate.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/style.min.css?v=4.0.0" rel="stylesheet"><!-- <base target="_blank"> -->
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <span style='font-size:16px;' class='label label-primary'>{$userStatus}</span>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="table_data_tables.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="table_data_tables.html#">选项1</a>
+                                </li>
+                                <li><a href="table_data_tables.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <table class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>用户ID</th>
+                                    <th>用户名</th>
+                                    <th>IH昵称</th>
+                                    <th>账号状态</th>
+                                    <th>注册时间</th>
+                                    <th>用户详情</th>
+                                    <th>用户动态</th>
+                                    <th>管理用户</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+								<foreach name="info" item="k" >    
+									<tr class="gradeX">
+										<td>{$k['id']}</td>
+										<td>{$k['username']}</td>
+										<td>{$k['nickname']|default="未设置昵称"}</td>
+										<td>
+											<switch name="k.status">    
+											<case value="0">禁用用户</case>    
+											<case value="1">普通用户</case>    
+											<case value="2">会员用户</case>    
+											<case value="3">认证用户</case>    
+											<case value="4">官方用户</case>    
+											<default />神秘用户
+											</switch>
+										</td>
+										<td>{$k['time']|date="Y-m-d H:i:s",###}</td>
+										<td class="center"><a href="__URL__/userdetails/id/{$k['id']}">->用户详情</a></td>
+										<td class="center"><a href="__URL__/userdynamic/nickname/{$k['nickname']}">->用户动态详情</a></td>
+										<td class="center">
+											<if condition="$relieve eq 1">
+												<a href="__URL__/relieveUser/id/{$k['id']}">解除禁用</a>
+											<else />
+												<a href="__URL__/userforbid/id/{$k['id']}">禁用</a>
+												&nbsp;&nbsp;
+												<a href="javascript:alert('等待完善');">禁言</a>
+											</if>
+										</td>
+									</tr>
+								</foreach>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>用户ID</th>
+                                    <th>用户名</th>
+                                    <th>IH昵称</th>
+                                    <th>账号状态</th>
+                                    <th>注册时间</th>
+                                    <th>用户详情</th>
+                                    <th>用户动态</th>
+									<th>管理用户</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script src="__PUBLIC__/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/js/bootstrap.min.js?v=3.3.5"></script>
+    <script src="__PUBLIC__/js/plugins/jeditable/jquery.jeditable.js"></script>
+    <script src="__PUBLIC__/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="__PUBLIC__/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="__PUBLIC__/js/content.min.js?v=1.0.0"></script>
+	 <script type="text/javascript" src="__PUBLIC__/js/contabs.min.js"></script>
+    <script src="__PUBLIC__/js/plugins/pace/pace.min.js"></script>
+    <script>
+        $(document).ready(function(){$(".dataTables-example").dataTable();var oTable=$("#editable").dataTable();oTable.$("td").editable("../example_ajax.php",{"callback":function(sValue,y){var aPos=oTable.fnGetPosition(this);oTable.fnUpdate(sValue,aPos[0],aPos[1])},"submitdata":function(value,settings){return{"row_id":this.parentNode.getAttribute("id"),"column":oTable.fnGetPosition(this)[2]}},"width":"90%","height":"100%"})});function fnClickAddRow(){$("#editable").dataTable().fnAddData(["Custom row","New row","New row","New row","New row"])};
+    </script>
+    <!-- <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script> -->
+
+</body>
+
+</html>
